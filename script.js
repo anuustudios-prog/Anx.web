@@ -1,8 +1,14 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  GoogleAuthProvider, 
+  signInWithPopup 
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -20,6 +26,7 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const googleProvider = new GoogleAuthProvider();
 
 // Initialize EmailJS with Public Key
 (function() {
@@ -197,7 +204,7 @@ if(loginModal) {
   });
 }
 
-// Firebase Login & Register Form Handler
+// Firebase Email/Password Login & Register Form Handler
 document.getElementById('login-form').addEventListener('submit', function(e) {
   e.preventDefault();
 
@@ -208,7 +215,6 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
   const userEmail = document.getElementById('login-email').value;
   const userPass = document.getElementById('login-password').value;
 
-  // First try to sign in
   signInWithEmailAndPassword(auth, userEmail, userPass)
     .then((userCredential) => {
       alert("Login Successful! Welcome back.");
@@ -218,12 +224,10 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
       document.getElementById('login-form').reset();
     })
     .catch((error) => {
-      // If account doesn't exist, automatically sign up the user
       createUserWithEmailAndPassword(auth, userEmail, userPass)
         .then(async (userCredential) => {
           const user = userCredential.user;
           
-          // Save user info in Firestore database
           await setDoc(doc(db, "users", user.uid), {
             email: userEmail,
             createdAt: new Date()
@@ -242,6 +246,35 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
         });
     });
 });
+
+// Firebase Google Login Handler
+const googleLoginBtn = document.getElementById('google-login-btn');
+if(googleLoginBtn) {
+  googleLoginBtn.addEventListener('click', function() {
+    signInWithPopup(auth, googleProvider)
+      .then(async (result) => {
+        const user = result.user;
+        
+        // Firestore එකේ user කෙනෙක් විදිහට save වී ඇද්දැයි පරීක්ෂා කර බැලීම
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        
+        if (!userSnap.exists()) {
+          await setDoc(userRef, {
+            email: user.email,
+            name: user.displayName,
+            createdAt: new Date()
+          });
+        }
+
+        alert("Google Login Successful! Welcome, " + user.displayName);
+        loginModal.classList.remove('active');
+      })
+      .catch((error) => {
+        alert("Google Login Error: " + error.message);
+      });
+  });
+}
 
 // Dynamic Fields Logic for Graphic Design Service
 const serviceSelect = document.getElementById('service');
