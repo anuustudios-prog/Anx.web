@@ -261,7 +261,7 @@
     </div>
   </div>
 
-  <!-- LOGIN MODAL -->
+<!-- LOGIN MODAL -->
   <div class="modal-overlay" id="login-modal">
     <div class="glass-card login-card">
       <i class="fa-solid fa-xmark close-modal" id="close-login-btn"></i>
@@ -277,7 +277,12 @@
           <label for="login-password">Password</label>
           <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
         </div>
-        <button type="submit" class="btn btn-primary" id="login-submit-btn" style="width: 100%;">Login</button>
+        <button type="submit" class="btn btn-primary" id="login-submit-btn" style="width: 100%; margin-bottom: 12px;">Login</button>
+        
+        <!-- Google Login Button එක මෙතැනට දාන්න -->
+        <button type="button" id="google-login-btn" class="btn btn-google" style="width: 100%; background: #db4437; color: white; display: flex; align-items: center; justify-content: center; gap: 10px; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+          <i class="fa-brands fa-google"></i> Login with Google
+        </button>
       </form>
     </div>
   </div>
