@@ -1,3 +1,26 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDykeGco6ktsy0UG6OomirN4Q0iNvRLhq8",
+  authDomain: "anx-web-4888e.firebaseapp.com",
+  projectId: "anx-web-4888e",
+  storageBucket: "anx-web-4888e.firebasestorage.app",
+  messagingSenderId: "428277401680",
+  appId: "1:428277401680:web:73995a41ecb0421803e955",
+  measurementId: "G-QCYR8NTNPW"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
 // Initialize EmailJS with Public Key
 (function() {
   emailjs.init("Ri93ZrOpPx8ioLBoc");
@@ -87,7 +110,7 @@ const serviceData = {
   }
 };
 
-function openServiceModal(key) {
+window.openServiceModal = function(key) {
   const data = serviceData[key];
   if (!data) return;
 
@@ -115,13 +138,13 @@ function openServiceModal(key) {
   `;
 
   document.getElementById('service-modal').classList.add('active');
-}
+};
 
-function closeServiceModal() {
+window.closeServiceModal = function() {
   document.getElementById('service-modal').classList.remove('active');
-}
+};
 
-function selectServiceAndOrder(serviceName) {
+window.selectServiceAndOrder = function(serviceName) {
   closeServiceModal();
   const serviceSelect = document.getElementById('service');
   if (serviceSelect) {
@@ -129,7 +152,7 @@ function selectServiceAndOrder(serviceName) {
     serviceSelect.dispatchEvent(new Event('change'));
   }
   document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-}
+};
 
 // Close Service Modal on Overlay Click
 const serviceModalOverlay = document.getElementById('service-modal');
@@ -174,7 +197,7 @@ if(loginModal) {
   });
 }
 
-// EmailJS Login Form Handler
+// Firebase Login & Register Form Handler
 document.getElementById('login-form').addEventListener('submit', function(e) {
   e.preventDefault();
 
@@ -185,24 +208,38 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
   const userEmail = document.getElementById('login-email').value;
   const userPass = document.getElementById('login-password').value;
 
-  const templateParams = {
-    user_email: userEmail,
-    user_password: userPass
-  };
-
-  // Send via EmailJS Service ID and Template ID
-  emailjs.send("service_c9dit18", "template_itxopwm", templateParams)
-    .then(function(response) {
-      alert("Login successful!");
+  // First try to sign in
+  signInWithEmailAndPassword(auth, userEmail, userPass)
+    .then((userCredential) => {
+      alert("Login Successful! Welcome back.");
       submitBtn.innerText = "Login";
       submitBtn.disabled = false;
       loginModal.classList.remove('active');
       document.getElementById('login-form').reset();
-    }, function(error) {
-      alert("Login error. Please try again.");
-      submitBtn.innerText = "Login";
-      submitBtn.disabled = false;
-      console.error('EmailJS Error:', error);
+    })
+    .catch((error) => {
+      // If account doesn't exist, automatically sign up the user
+      createUserWithEmailAndPassword(auth, userEmail, userPass)
+        .then(async (userCredential) => {
+          const user = userCredential.user;
+          
+          // Save user info in Firestore database
+          await setDoc(doc(db, "users", user.uid), {
+            email: userEmail,
+            createdAt: new Date()
+          });
+
+          alert("Account created & Logged in successfully!");
+          submitBtn.innerText = "Login";
+          submitBtn.disabled = false;
+          loginModal.classList.remove('active');
+          document.getElementById('login-form').reset();
+        })
+        .catch((regError) => {
+          alert("Error: " + regError.message);
+          submitBtn.innerText = "Login";
+          submitBtn.disabled = false;
+        });
     });
 });
 
